@@ -1,37 +1,21 @@
 import React from "react";
-import styled from "styled-components/native";
-import { Card } from "react-native-paper";
-import { View, Text, Image } from "react-native";
+import { Image } from "react-native";
 import { SvgXml } from "react-native-svg";
 import Star from "../../../../../../assets/star.js";
 import openSign from "../../../../../../assets/open.js";
+import { Spacer } from "../../../../spacer/spacer.component.js";
+import { Text } from "../../../../typography/text.component.js";
+import {
+  RestaurantCard,
+  StyledImage,
+  Info,
+  Adress,
+  Rating,
+  Row,
+  InfoWrapper,
+} from "./restaurants-info-card.styles.js";
 
 export const RestaurantInfoCard = ({ restaurant = {} }) => {
-  const Title = styled.Text`
-    font-family: ${(props) => props.theme.fonts.heading};
-    font-size: ${(props) => props.theme.fontSizes.body};
-  `;
-
-  const RestaurantCard = styled(Card)`
-    borderradius: ${(props) => props.theme.sizes[0]};
-    paddingbottom: ${(props) => props.theme.space[0]};
-    background-color: white;
-  `;
-
-  const SyledImage = styled(Card.Cover)`
-    border-bottom-right-radius: ${(props) => props.theme.space[0]};
-    border-bottom-left-radius: ${(props) => props.theme.space[0]};
-    margin: 16px;
-  `;
-  const Info = styled(View)`
-    padding: ${(props) => props.theme.space[3]};
-  `;
-
-  const Adress = styled(Text)`
-    font-family: ${(props) => props.theme.fonts.body};
-    font-size: ${(props) => props.theme.fontSizes.caption};
-  `;
-
   const {
     name = "somerest",
     icon = "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/lodging-71.png",
@@ -44,43 +28,30 @@ export const RestaurantInfoCard = ({ restaurant = {} }) => {
     isClosedTemporarily = false,
   } = restaurant;
 
-  const Rating = styled(View)`
-    flex-direction: row;
-    padding-top: ${(props) => props.theme.space[2]};
-    padding-bottom: ${(props) => props.theme.space[2]};
-  `;
-
-  const Row = styled(View)`
-    flex-direction: row;
-    justify-content: space-between;
-  `;
   const ratingArray = Array.from(new Array(Math.floor(rating)));
 
   return (
     <RestaurantCard>
-      <SyledImage source={{ uri: photos[0] }}></SyledImage>
+      <StyledImage source={{ uri: photos[0] }}></StyledImage>
       <Info>
-        <Title>{name}</Title>
+        <Text variant="label">{name}</Text>
         <Row>
           <Rating>
             {ratingArray.map(() => (
               <SvgXml xml={Star} width={20} height={20} />
             ))}
           </Rating>
-          <View
-            style={{
-              flexDirection: "row",
-              flex: 1,
-              justifyContent: "flex-end",
-            }}
-          >
+          <InfoWrapper>
             {isClosedTemporarily ? (
-              <Text style={{ color: "red" }}>CLOSED TEMPORARILY</Text>
+              <Text variant="error">CLOSED TEMPORARILY</Text>
             ) : isOpenNow ? (
-              <SvgXml xml={openSign} width={20} height={20} />
+              <SvgXml xml={openSign} width={20} height={20} style={{}} />
             ) : null}
-            <Image width={15} height={15} source={{ uri: icon }} />
-          </View>
+
+            <Spacer position="left" size="medium">
+              <Image width={15} height={15} source={{ uri: icon }} />
+            </Spacer>
+          </InfoWrapper>
         </Row>
         <Adress>100 random street</Adress>
       </Info>
